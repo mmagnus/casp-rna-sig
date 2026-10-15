@@ -470,7 +470,7 @@ var EXTRA=[];
       (t[4]?'<a class="rec" href="'+t[4]+'" target="_blank" rel="noopener">▶ Watch</a>':'')+'</li>';}
   var LV=["","Intro","Core","Advanced"],w=0,html="";
   COURSE.forEach(function(m){
-    html+='<div class="module"><div class="mod-head"><h3>'+esc(m.m)+'</h3><span class="level l'+m.lv+'">'+LV[m.lv]+'</span></div>';
+    html+='<div class="module"><div class="mod-head"><h3>'+esc(m.m)+'</h3>'+(m.lv===1?'<span class="level l1">Intro</span>':'')+'</div>';
     m.weeks.forEach(function(wk){w++;
       html+='<div class="week"><div class="wk"><b>Week '+w+'</b></div><div><div class="focus">'+esc(wk[0])+'</div><ul class="ct">'+wk[1].map(item).join("")+'</ul></div></div>';});
     html+='</div>';});
