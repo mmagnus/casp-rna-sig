@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CASP RNA SIG</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single column like RNA Club Warsaw — nav, hero with a dot-bracket strip, then bordered sections; blue replaces yellow as the one accent */
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF; --surface:#FFFFFF; --ink:#1E1915; --muted:#6B6058; --line:#EFE6DE;
+  --blue:#FBAA62; --blue-strong:#C25410; --blue-soft:#FFF4EA; --on-blue:#1E1915;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1040px;margin:0 auto}
+a{color:var(--ink);text-decoration-color:var(--blue);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--blue-strong)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h2{font-size:clamp(1.6rem,3.4vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.eyebrow::before{content:"";display:inline-block;width:.7em;height:.7em;background:var(--blue);border-radius:50%;margin-right:.5em;vertical-align:-.05em}
+
+nav{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:center;justify-content:space-between;padding-block:18px;border-bottom:1px solid var(--line)}
+.brand{font-family:var(--display);font-weight:800;font-size:1.05rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand svg{width:32px;height:32px;flex:none}
+nav ul{display:flex;flex-wrap:wrap;gap:4px 18px;list-style:none;margin:0;padding:0;font-size:.92rem}
+nav ul a{color:var(--muted);text-decoration:none}
+nav ul a:hover{color:var(--ink);box-shadow:inset 0 -2px 0 var(--blue)}
+
+.hero{padding-block:56px 40px;display:grid;gap:22px}
+.hero-top{display:flex;align-items:center;gap:clamp(16px,3vw,32px);flex-wrap:wrap}
+.hero-top svg{width:clamp(80px,13vw,128px);height:auto;flex:none}
+.hero h1{font-size:clamp(2.6rem,8vw,5.2rem);font-weight:800;letter-spacing:-.03em}
+.hero h1 span{color:var(--blue-strong)}
+.lede{font-size:1.15rem;max-width:62ch}
+.seq{font-family:var(--mono);font-size:clamp(.78rem,2.2vw,1.02rem);line-height:1.35;white-space:pre;overflow-x:auto;
+  background:var(--blue);color:var(--on-blue);padding:10px 14px;border-radius:8px;max-width:100%;justify-self:start}
+.seq .db{opacity:.75}
+.facts{display:flex;flex-wrap:wrap;gap:10px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.fact b{font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:600;font-size:.95rem;text-decoration:none;
+  padding:10px 18px;border-radius:999px;border:2px solid var(--blue);cursor:pointer}
+.btn.primary{background:var(--blue);color:var(--on-blue)}
+.btn.primary:hover{background:var(--blue-soft);border-color:var(--blue);color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--blue-soft);color:var(--ink)}
+
+section{padding-block:48px;border-top:1px solid var(--line);display:grid;gap:24px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+.cols>*{min-width:0}
+.prose{display:grid;gap:14px;max-width:65ch;align-content:start}
+
+.topics{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;align-content:flex-start}
+.topic{font-size:.88rem;line-height:1.3;border:1px solid var(--blue);background:var(--blue-soft);padding:5px 12px;border-radius:999px;white-space:nowrap}
+
+.format{list-style:none;margin:0;padding:0;display:grid}
+.format li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding-block:14px;border-bottom:1px dashed var(--line)}
+.format li:last-child{border-bottom:0}
+.format .k{font-family:var(--mono);font-size:.82rem;font-weight:500;background:var(--blue-soft);color:var(--blue-strong);border-radius:4px;padding:1px 8px;justify-self:start;align-self:start}
+.format small{display:block;color:var(--muted);font-size:.92rem}
+
+.join{background:var(--blue-soft);border:2px solid var(--blue);border-radius:14px;padding:clamp(20px,4vw,32px);display:grid;gap:18px}
+.join h2{font-size:clamp(1.5rem,3.6vw,2.1rem)}
+.steps{margin:0;padding-left:1.3em;display:grid;gap:8px;max-width:65ch}
+
+.channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.ch{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--surface);display:grid;gap:8px;align-content:start;min-width:0}
+.ch:hover{border-color:var(--blue)}
+.ch .role{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ch p{font-size:.94rem}
+.addr{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.addr code{font-family:var(--mono);font-size:.84rem;background:var(--blue-soft);padding:3px 8px;border-radius:6px;word-break:break-all;user-select:all}
+.copy{font:inherit;font-size:.8rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:3px 9px;cursor:pointer}
+.copy:hover{border-color:var(--blue)}
+.note{color:var(--muted);font-size:.92rem;max-width:70ch}
+
+.next{background:var(--blue-soft);border:2px solid var(--blue);border-radius:14px;padding:clamp(18px,4vw,28px);display:grid;gap:10px}
+.next .role,.upcoming h3{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.next-date{font-family:var(--display);font-size:clamp(1.4rem,3.6vw,2rem);font-weight:800;letter-spacing:-.02em}
+.tz{display:block;font-family:var(--mono);font-size:.82rem;font-weight:400;letter-spacing:0;color:var(--muted)}
+.next h3{font-size:1.25rem}
+.aff{font-family:var(--body);font-weight:400;font-size:.95rem;color:var(--muted)}
+.upcoming{display:grid;gap:8px}
+.mini{list-style:none;margin:0;padding:0;display:grid}
+.mini li{display:grid;grid-template-columns:72px 1fr;gap:14px;padding-block:8px;border-bottom:1px dashed var(--line)}
+.mini li:last-child{border-bottom:0}
+.mini time{font-family:var(--mono);font-size:.85rem;color:var(--blue-strong);font-variant-numeric:tabular-nums}
+
+.all{border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.all summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:18px 20px;font-family:var(--display);font-weight:700;font-size:1.15rem}
+.all summary::-webkit-details-marker{display:none}
+.all summary:hover{background:var(--blue-soft);border-radius:14px}
+.sum-n{font-family:var(--mono);font-size:.8rem;font-weight:400;color:var(--muted)}
+.chev{margin-left:auto;width:10px;height:10px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);transition:transform .2s}
+.all[open] .chev{transform:rotate(-135deg)}
+.all-body{padding:4px 20px 20px;display:grid;gap:14px;border-top:1px solid var(--line);padding-top:16px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#talk-search{font:inherit;font-size:.92rem;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-width:0;flex:1 1 220px;max-width:360px}
+#talk-search:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.chip,.tagchip{font:inherit;font-size:.84rem;border:1px solid var(--blue);background:var(--surface);color:var(--ink);padding:4px 11px;border-radius:999px;cursor:pointer}
+.tagchip{background:var(--blue-soft)}
+.chip[aria-pressed="true"],.tagchip[aria-pressed="true"]{background:var(--blue);font-weight:600}
+.chip:hover,.tagchip:hover{border-color:var(--blue-strong)}
+.tagchip .n{font-family:var(--mono);font-size:.74rem;opacity:.65;margin-left:4px}
+.tagbar{display:flex;flex-wrap:wrap;gap:6px}
+.talks{list-style:none;margin:0;padding:0;display:grid}
+.talk{display:grid;grid-template-columns:104px 1fr;gap:16px;padding-block:14px;border-bottom:1px solid var(--line)}
+.talk:last-child{border-bottom:0}
+.talk time{font-family:var(--mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
+.talk .body{display:grid;gap:4px;min-width:0}
+.talk .who{font-family:var(--display);font-weight:700;font-size:1.02rem}
+.talk .where{font-family:var(--body);font-weight:400;color:var(--muted);font-size:.9rem}
+.talk .title{font-size:.95rem}
+.talk .meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:2px}
+.t-tag{font:inherit;font-size:.74rem;padding:1px 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.t-tag:hover{border-color:var(--blue);color:var(--ink)}
+.rec{font-family:var(--mono);font-size:.72rem;padding:1px 8px;border-radius:999px;text-decoration:none}
+a.rec{background:var(--blue);color:var(--ink)}
+a.rec:hover{background:var(--blue-strong);color:#fff}
+a.page{font-family:var(--mono);font-size:.72rem;padding:1px 8px;border-radius:999px;border:1px solid var(--blue);text-decoration:none;color:var(--blue-strong)}
+a.page:hover{background:var(--blue-soft)}
+span.rec{background:var(--bg);border:1px dashed var(--line);color:var(--muted)}
+.empty{color:var(--muted)}
+@media (max-width:560px){.talk{grid-template-columns:1fr;gap:4px}}
+footer{border-top:4px solid var(--blue);padding-block:28px 0;color:var(--muted);font-size:.88rem;display:grid;gap:6px}
+@media (max-width:520px){.format li{grid-template-columns:1fr;gap:6px}}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="14" fill="var(--blue)"/>
+      <path d="M18 50 V24 a14 14 0 0 1 28 0 V50" fill="none" stroke="var(--on-blue)" stroke-width="4" stroke-linecap="round"/>
+      <g stroke="var(--on-blue)" stroke-width="3" stroke-linecap="round" opacity=".8">
+        <line x1="18" y1="44" x2="46" y2="44"/><line x1="18" y1="37" x2="46" y2="37"/><line x1="18" y1="30" x2="46" y2="30"/>
+      </g>
+      <circle cx="32" cy="10" r="3" fill="var(--on-blue)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap" id="top">
+  <nav aria-label="Main">
+    <a class="brand" href="#top"><svg aria-hidden="true"><use href="#mark"/></svg>CASP RNA SIG</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#format">Meetings</a></li>
+      <li><a href="#join">Google Group</a></li>
+      <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#links">Links</a></li>
+      <li><a href="#suggest">Suggest</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg>
+      <h1>CASP <span>RNA</span> SIG</h1>
+    </div>
+    <p class="lede">A Special Interest Group for nucleic acid 3D structure prediction. We meet online every two weeks to talk about the state of the field and what is new in it, from experimental data and benchmark sets to alignments, ligands and ensembles.</p>
+    <div class="facts">
+      <span class="fact"><b>Every two weeks</b> · Thursdays online</span>
+      <span class="fact"><b>Talks</b> recorded on YouTube</span>
+      <span class="fact"><b>Open</b> to everyone</span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="https://groups.google.com/g/casp-rna-sig" target="_blank" rel="noopener">Join the Google Group</a>
+      <a class="btn ghost" href="https://www.youtube.com/@CASPRNASIG" target="_blank" rel="noopener">Watch past talks</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <span class="eyebrow">About</span>
+    <div class="cols">
+      <div class="prose">
+        <h2>Nucleic acid 3D structure, discussed as a community</h2>
+        <p>The SIG grew out of the CASP RNA category. It brings together people who predict, determine and assess RNA and DNA structures, and gives them a regular place to compare notes between CASP rounds.</p>
+        <p>Alongside the talks we run a Google Group for announcements and longer email discussion.</p>
+        <p>The series started in May 2023, organized by Rachael Kretsch (Das and Chiu labs, Stanford) and Marcin Magnus (Rivas lab, Harvard). We are looking for more organizers; the job is to invite 2–4 speakers a year.</p>
+      </div>
+      <div class="prose">
+        <h3>Topics we cover</h3>
+        <div class="topics">
+          <span class="topic">3D structure prediction</span>
+          <span class="topic">Experimental data</span>
+          <span class="topic">Training &amp; test sets</span>
+          <span class="topic">RNA alignments</span>
+          <span class="topic">Ligand interactions</span>
+          <span class="topic">Structural ensembles</span>
+          <span class="topic">Assessment &amp; metrics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="format">
+    <span class="eyebrow">Meetings</span>
+    <h2>How a meeting works</h2>
+    <ul class="format">
+      <li><span class="k">When</span><div>Every other Thursday, online<small>8:00 PT · 11:00 ET · 17:00 Central Europe. Exact dates are in the schedule and calendar below.</small></div></li>
+      <li><span class="k">Talks</span><div>Invited speakers present recent work<small>Followed by questions and open discussion.</small></div></li>
+      <li><span class="k">Recording</span><div>Talks are posted to the YouTube channel<small>Browse them in the past-talks playlist.</small></div></li>
+      <li><span class="k">Between</span><div>Discussion continues on the Google Group<small>Announcements, papers, datasets and questions.</small></div></li>
+    </ul>
+  </section>
+
+  <section id="speakers">
+    <span class="eyebrow">Speakers</span>
+    <div class="next">
+      <span class="role">Next seminar · today</span>
+      <div class="next-date">Thu 15 October 2026 <span class="tz">17:00 CEST · 11:00 ET · 8:00 PT</span></div>
+      <h3>Rohit Roy <span class="aff">MRC Laboratory of Molecular Biology, UK</span></h3>
+      <p>Thermodynamic prediction of RNA cellular activity from sequence via conformational ensembles</p>
+      <div class="cta"><a class="btn primary" href="https://tinyurl.com/casp-rna-zoom" target="_blank" rel="noopener">Join on Zoom</a></div>
+    </div>
+    <div class="upcoming">
+      <h3>Coming up</h3>
+      <ul class="mini">
+        <li><time>29 Oct</time><span>CASP17 target special seminar</span></li>
+        <li><time>12 Nov</time><span><b>Jeffrey Kieft</b> · New York Structural Biology Center</span></li>
+        <li><time>10 Dec</time><span><b>Juli Feigon</b></span></li>
+        <li><time>28 Jan</time><span>CASP17 target special seminar</span></li>
+      </ul>
+    </div>
+
+    <details class="all" id="all-talks" open>
+      <summary><span class="sum-t">All speakers since 2023</span> <span class="sum-n" id="sum-n"></span><span class="chev" aria-hidden="true"></span></summary>
+      <div class="all-body">
+        <div class="filters">
+          <input id="talk-search" type="search" placeholder="Search speaker, institute or title" aria-label="Search talks">
+          <button class="chip" type="button" id="rec-only" aria-pressed="false">Recorded only</button>
+        </div>
+        <div class="tagbar" id="tagbar" aria-label="Filter by topic"></div>
+        <ol class="talks" id="talks"></ol>
+        <p class="note">From the public <a href="https://tinyurl.com/rna-sig-schedule" target="_blank" rel="noopener">seminar schedule</a>. Talk pages are the announcement notes on HackMD. Topic tags are a first draft for the organizers to edit.</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="join" aria-labelledby="join-h">
+    <div class="join">
+      <span class="eyebrow">Google Group</span>
+      <h2 id="join-h">Join casp-rna-sig on Google Groups</h2>
+      <p class="prose">Meeting announcements, Zoom links and community discussion go to the group first. Joining is the easiest way not to miss a talk.</p>
+      <ol class="steps">
+        <li>Open the group page and click <b>Join group</b> (you need a Google account), or</li>
+        <li>send an empty email to the subscribe address below. No Google account is needed for this.</li>
+      </ol>
+      <div class="addr">
+        <code id="sub-addr">casp-rna-sig+subscribe@googlegroups.com</code>
+        <button class="copy" type="button" data-copy="sub-addr">Copy</button>
+      </div>
+      <div class="addr">
+        <code id="post-addr">casp-rna-sig@googlegroups.com</code>
+        <button class="copy" type="button" data-copy="post-addr">Copy</button>
+        <span class="note">to post once you are a member</span>
+      </div>
+      <div class="cta">
+        <a class="btn primary" href="https://groups.google.com/g/casp-rna-sig" target="_blank" rel="noopener">Open the group</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="links">
+    <span class="eyebrow">Links</span>
+    <h2>Schedule, calendar and recordings</h2>
+    <div class="channels">
+      <div class="ch">
+        <span class="role">Schedule</span>
+        <h3><a href="https://tinyurl.com/rna-sig-schedule" target="_blank" rel="noopener">Upcoming talks</a></h3>
+        <p>Speakers and dates for the season.</p>
+      </div>
+      <div class="ch">
+        <span class="role">Calendar</span>
+        <h3><a href="https://tinyurl.com/rna-sig-calendar" target="_blank" rel="noopener">Google Calendar</a></h3>
+        <p>Add every meeting in one click. For Outlook or Apple Calendar use the <a href="https://tinyurl.com/rna-sig-cal-ics" target="_blank" rel="noopener">.ics feed</a>.</p>
+      </div>
+      <div class="ch">
+        <span class="role">Recordings</span>
+        <h3><a href="https://tinyurl.com/rna-sig-playlist" target="_blank" rel="noopener">Past talks playlist</a></h3>
+        <p>All recorded talks on the <a href="https://www.youtube.com/@CASPRNASIG" target="_blank" rel="noopener">@CASPRNASIG</a> channel.</p>
+      </div>
+      <div class="ch">
+        <span class="role">RSS</span>
+        <h3>New videos feed</h3>
+        <div class="addr">
+          <code id="rss">https://www.youtube.com/feeds/videos.xml?channel_id=UCPXRm5G8jQJkFLz7fcQ2TOA</code>
+          <button class="copy" type="button" data-copy="rss">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="suggest">
+    <span class="eyebrow">Suggest</span>
+    <div class="cols">
+      <div class="prose">
+        <h2>Suggest a speaker</h2>
+        <p>Know someone with new methods, data or benchmarks in nucleic acid structure? Self-nominations are welcome too. Write to the organizers with the name, a short topic line and a link to the work.</p>
+      </div>
+      <div class="ch">
+        <span class="role">Contact</span>
+        <div class="addr">
+          <code id="contact">casp.rna.sig@gmail.com</code>
+          <button class="copy" type="button" data-copy="contact">Copy</button>
+        </div>
+        <p class="note">Also the address for questions about the group or recordings.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>CASP RNA SIG · Special Interest Group on nucleic acid 3D structure prediction · #casprnasig #rnastructure</span>
+    <span><a href="https://www.youtube.com/@CASPRNASIG" target="_blank" rel="noopener">YouTube</a> · <a href="https://groups.google.com/g/casp-rna-sig" target="_blank" rel="noopener">Google Group</a> · <a href="https://tinyurl.com/rna-sig-schedule" target="_blank" rel="noopener">Schedule</a></span>
+  </footer>
+</div>
+
+<script>
+var DL="Deep learning",EN="Ensembles & dynamics",CP="Chemical probing",SIM="Simulation",EX="Experimental structure",DS="RNA design",SM="Small molecules",RP="RNA–protein",TL="Tools & databases",SS="Secondary structure",BM="Benchmarks & CASP",TH="Thermodynamics";
+var TALKS=[
+["2026-09-17","Jiří Černý","Institute of Biotechnology, Czech Academy of Sciences","Nucleic acid geometry at a glance: a walkthrough of DNATCO v5.0","https://youtu.be/-j4WGnKOU-Y",[TL,EX]],
+["2026-09-03","Bohdan Schneider","Institute of Biotechnology, Czech Academy of Sciences","A bottom-up approach to RNA architecture: dinucleotide conformers and base pairs","https://youtu.be/jCUhNEvS4Sw",[EX,TL]],
+["2026-08-20","Peng Xiong","University of Science and Technology of China","Bridging quantum accuracy and coarse-grained efficiency in biomolecular simulation","",[SIM,DL]],
+["2026-08-06","Janusz Bujnicki","IIMCB, Poland","Structural bioinformatics of RNA: structures, folding, interactions, and modifications","",[TL,SIM,RP]],
+["2026-07-23","Michael Gromiha, Somya Krishnan","IIT Madras, India","Probing RNA–small molecule interactions with machine learning","https://youtu.be/ZEMyW0tX9yY",[SM,DL]],
+["2026-06-25","Lin Huang","Sun Yat-sen University","Data-driven nucleic acid crystallography","",[EX]],
+["2026-04-30","Angela Yu","Baylor College of Medicine, USA","","",[]],
+["2026-04-16","Edric Choi, Julius Lucks","Northwestern University","Ubiquitous low-energy RNA fluctuations and energetic coupling measured by chemical probing","https://youtu.be/ITphUNFfnm4",[CP,EN,TH]],
+["2026-04-02","Anthony Stohr, Jill Townley","University of Delaware, Eterna","Crowdsourced design of RNA molecular switches that enable dynamic cellular control","",[DS]],
+["2026-03-19","Pratyush Tiwary","University of Maryland, USA","Ab initio prediction of thermodynamically ranked RNA tertiary structure ensembles with RNAnneal","https://www.youtube.com/watch?v=OZQeE4J4YA8",[EN,SIM]],
+["2026-03-05","Cameron Mackereth","Université de Bordeaux","Unusual DNA architecture in a dopamine-bound aptamer complex","https://youtu.be/gCIPCfnEHVs",[EX,SM]],
+["2026-02-19","Tony Mustoe","Baylor College of Medicine, USA","Teaching an old dog new tricks: using DMS to map higher-order RNA structures and folding thermodynamics","https://youtu.be/DgZsPJ69_k0",[CP,TH]],
+["2026-02-05","Kaggle RNA 3D Folding Challenge","Stanford, HHMI","Template-based RNA structure prediction advanced through a blind code competition","https://youtu.be/kKC5WjAqWsc",[DL,BM]],
+["2026-01-29","Hani Goodarzi","UCSF, Arc Institute","Building structure-aware models of RNA–protein interactions through explicit context-free grammar encoding","https://youtu.be/5mtlZvBzFhc",[RP,DL]],
+["2026-01-08","Marta Szachniuk","IBCH PAS, Poland","Entanglements in RNA 3D structures: challenges and strategies","https://youtu.be/A9M1d61dzQk",[TL]],
+["2025-12-11","Marko Ludaic","Stockholm University","Limits of deep-learning-based RNA prediction methods","https://www.youtube.com/watch?v=NMfwfwVJbBQ",[DL,BM]],
+["2025-11-26","Yun-Xing Wang","National Cancer Institute, NIH, USA","Snapshot structure vs. conformational space of RNA under physiologically relevant Mg²⁺ concentrations","",[EN,EX]],
+["2025-10-30","Giovanni Bussi","SISSA, Trieste","RNA molecules are not alone: unravelling RNA interaction with water, Mg²⁺ ions, and chemical probes","https://youtu.be/NRCgrG-QWHI",[SIM,CP]],
+["2025-10-16","Danny Incarnato","University of Groningen","Discovery of RNA regulatory structural switches via in-cell ensemble mapping","https://youtu.be/pwinGjkcPtM",[CP,EN]],
+["2025-10-02","Debswapna Bhattacharya","Virginia Tech","RNAbpFlow: base pair-augmented SE(3)-flow matching for conditional RNA 3D structure generation","",[DL]],
+["2025-09-18","Fariza Tahi, Clément Bernard","Université Paris-Saclay","EvryRNA tools with a special focus on RNAdvisor: an RNA structural quality assessment tool","https://youtu.be/LMWC0UhQSNU",[TL,BM]],
+["2025-09-04","George Ghanim","MRC LMB, UK","Structural mechanism of LINE-1 target-primed reverse transcription","https://youtu.be/rM3GGeKrqxc",[EX,RP]],
+["2025-08-21","Yiliang Ding","John Innes Centre, UK","Decoding RNA language in plants","https://youtu.be/UHLE0wOVMh0",[CP]],
+["2024-05-14","Silvi Rouskin","Harvard Medical School","Improving RNA structure predictions with diverse data and machine learning","",[DL,CP]],
+["2024-04-23","Quentin Vicens","University of Houston, USA","RNA Texas Fold 'em: one step to the right, run me to the left, spin me in the middle?","https://youtu.be/Wr0lm0Jqq8M",[]],
+["2024-04-09","Daisuke Kihara","Purdue University, USA","NuFold: RNA structure prediction using deep learning with flexible nucleobase center representation","",[DL]],
+["2024-03-12","Megan Ken","Scripps Research","The role of RNA ensemble dynamics in predicting cellular activity","https://www.youtube.com/watch?v=u71HdprSO14",[EN]],
+["2024-02-27","Navtej Toor","UC San Diego","Structural evolution of pre-mRNA splicing","https://www.youtube.com/watch?v=pNo919Zdv7I",[EX,RP]],
+["2024-02-13","Shujun He","Texas A&M University","Ribonanza: deep learning of RNA structure through dual crowdsourcing","https://youtu.be/a8a41m_iCek",[DL,CP]],
+["2024-01-30","Chaitanya Joshi","University of Cambridge","gRNAde: a geometric deep learning pipeline for 3D RNA inverse design","https://youtu.be/_MiGPjS-aIA",[DS,DL]],
+["2024-01-16","Joseph Yesselman","University of Nebraska–Lincoln","High-throughput determination of RNA tertiary contact thermodynamics by quantitative DMS chemical mapping","https://youtu.be/baRPkvAo0t0",[CP,TH]],
+["2023-12-05","Miroslav Krepl","Institute of Biophysics, Czech Academy of Sciences","Dynamic recognition of RNA by proteins and the role of partial disorder","https://youtu.be/OJZDh_pvigw",[SIM,RP]],
+["2023-11-21","Cathy Lawson","Rutgers University","The Nucleic Acid Knowledgebase: a new portal for 3D structural information about nucleic acids","https://youtu.be/HkrI4EUw1nQ",[TL]],
+["2023-11-07","Karissa Sanbonmatsu","Los Alamos National Laboratory","Molecular simulations of RNA and RNA–protein complexes: understanding molecular mechanism and fitting cryo-EM","https://youtu.be/TXlFprgadxA",[SIM,RP,EX]],
+["2023-10-24","Jianyi Yang, Wenkai Wang","Shandong University, Nankai University","Automated prediction of RNA 3D structure with trRosettaRNA","https://www.youtube.com/watch?v=LTp21NolEak",[DL]],
+["2023-10-10","Rhiju Das","Stanford University, USA","Ribonanza: big data for RNA structure prediction","https://www.youtube.com/watch?v=R6-MwrGkj7M",[CP,DL]],
+["2023-08-29","Eugene Baulin","IMol, Polish Academy of Sciences","SQUARNA: RNA secondary structure prediction with a greedy stem formation model","https://www.youtube.com/watch?v=H1eocTXM7LA",[SS]],
+["2023-08-15","Robin Pearce","University of Michigan","End-to-end RNA tertiary structure prediction using deep learning","https://www.youtube.com/watch?v=ZsjA4iWZmiA",[DL]],
+["2023-08-01","Grzegorz Chojnowski","EMBL Hamburg","Hidden errors in cryo-EM and crystal structure models of macromolecules","https://www.youtube.com/watch?v=aNrtHMQJqy0",[EX]],
+["2023-06-20","Ewan McRae","Houston Methodist, USA","RNA origami as a structure prediction target and a tool for structural biology","https://www.youtube.com/watch?v=nzrBUXfvwf4",[DS,EX]],
+["2023-06-06","Frank DiMaio","University of Washington School of Medicine","Predicting protein/nucleic acid complexes with RoseTTAFoldNA","https://www.youtube.com/watch?v=8qWrEAyB1Ok",[DL,RP]],
+["2023-05-23","Yu Li","Chinese University of Hong Kong","RNA structure prediction with deep learning","https://www.youtube.com/watch?v=fdMkEk84Y4A",[DL]]
+];
+var HACKMD={"Grzegorz Chojnowski":"Byuyv1Js2","Robin Pearce":"S1FMJXbhn","Eugene Baulin":"ByPMJDG6h","Rhiju Das":"HyGjE-cep","Jianyi Yang, Wenkai Wang":"SkmSAw3Wa","Karissa Sanbonmatsu":"rJZkXoz7a","Cathy Lawson":"SJXn2sZVa","Miroslav Krepl":"Sk8hGDUH6","Joseph Yesselman":"rkvfzPsua","Chaitanya Joshi":"rkV712TFp","Shujun He":"Skr0wPljp","Navtej Toor":"rJmxokNha","Megan Ken":"BJTl5vL66","Daisuke Kihara":"rkRZBCs1C","Quentin Vicens":"BJl7kyClR","Silvi Rouskin":"rJ5PvC0W0"};
+(function(){
+  var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function fmt(d){var p=d.split("-");return (+p[2])+" "+M[+p[1]-1]+" "+p[0];}
+  var people=0;TALKS.forEach(function(t){people+=t[1].indexOf("Kaggle")===0?0:t[1].split(",").length;});
+  document.getElementById("sum-n").textContent=TALKS.length+" talks · "+people+" speakers";
+  var state={tag:null,q:"",rec:false};
+  var counts={};TALKS.forEach(function(t){t[5].forEach(function(g){counts[g]=(counts[g]||0)+1;});});
+  var tags=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]||a.localeCompare(b);});
+  var bar=document.getElementById("tagbar");
+  tags.forEach(function(g){var b=document.createElement("button");b.type="button";b.className="tagchip";b.dataset.tag=g;b.setAttribute("aria-pressed","false");
+    b.innerHTML=g.replace(/&/g,"&amp;")+'<span class="n">'+counts[g]+'</span>';b.onclick=function(){setTag(state.tag===g?null:g);};bar.appendChild(b);});
+  function setTag(g){state.tag=g;bar.querySelectorAll(".tagchip").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.tag===g?"true":"false");});render();}
+  var list=document.getElementById("talks");
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+  function render(){
+    var q=state.q.toLowerCase(),html="",n=0;
+    TALKS.forEach(function(t){
+      if(state.tag&&t[5].indexOf(state.tag)<0)return;
+      if(state.rec&&!t[4])return;
+      if(q&&(t[1]+" "+t[2]+" "+t[3]).toLowerCase().indexOf(q)<0)return;
+      n++;
+      html+='<li class="talk"><time datetime="'+t[0]+'">'+fmt(t[0])+'</time><div class="body"><div class="who">'+esc(t[1])+' <span class="where">· '+esc(t[2])+'</span></div>'+
+        (t[3]?'<div class="title">'+esc(t[3])+'</div>':'')+'<div class="meta">'+
+        (t[4]?'<a class="rec" href="'+t[4]+'" target="_blank" rel="noopener">▶ Watch</a>':'<span class="rec">Not recorded</span>')+
+        (HACKMD[t[1]]?'<a class="page" href="https://hackmd.io/@mmagnus/'+HACKMD[t[1]]+'" target="_blank" rel="noopener">Talk page</a>':'')+
+        t[5].map(function(g){return '<button type="button" class="t-tag" data-tag="'+esc(g)+'">'+esc(g)+'</button>';}).join("")+'</div></div></li>';
+    });
+    list.innerHTML=html||'<li class="empty">No talks match these filters.</li>';
+  }
+  list.addEventListener("click",function(e){var b=e.target.closest(".t-tag");if(b)setTag(b.dataset.tag.replace(/&amp;/g,"&"));});
+  document.getElementById("talk-search").addEventListener("input",function(e){state.q=e.target.value;render();});
+  var rb=document.getElementById("rec-only");rb.onclick=function(){state.rec=!state.rec;rb.setAttribute("aria-pressed",state.rec);render();};
+  render();
+})();
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy), t=el.textContent.trim();
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected';}
+    try{navigator.clipboard.writeText(t).then(function(){b.textContent='Copied';},sel);}catch(e){sel();}
+    setTimeout(function(){b.textContent='Copy';},1800);
+  });
+});
+</script>
+
+</body>
+</html>
