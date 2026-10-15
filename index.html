@@ -139,6 +139,25 @@ a.page:hover{background:var(--blue-soft)}
 span.rec{background:var(--bg);border:1px dashed var(--line);color:var(--muted)}
 .empty{color:var(--muted)}
 @media (max-width:560px){.talk{grid-template-columns:1fr;gap:4px}}
+.modules{display:grid;gap:14px}
+.module{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:18px 20px;display:grid;gap:12px}
+.mod-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.mod-head h3{font-size:1.2rem}
+.level{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--blue);color:var(--blue-strong)}
+.level.l1{background:var(--blue-soft)}
+.level.l3{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
+.week{display:grid;grid-template-columns:84px 1fr;gap:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.week:first-of-type{border-top:0;padding-top:0}
+.wk{font-family:var(--mono);font-size:.8rem;color:var(--muted);padding-top:2px}
+.wk b{display:block;font-family:var(--display);font-size:1.05rem;color:var(--ink)}
+.week .focus{font-weight:600;margin-bottom:4px}
+.ct{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ct li{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;font-size:.94rem;min-width:0}
+.ct .n{font-family:var(--mono);font-size:.78rem;color:var(--blue-strong);min-width:2.6em}
+.ct .s{font-weight:600}
+.ct .t{color:var(--muted);flex:1 1 260px;min-width:0}
+.extra{display:grid;gap:8px}
+@media (max-width:520px){.week{grid-template-columns:1fr;gap:4px}}
 footer{border-top:4px solid var(--blue);padding-block:28px 0;color:var(--muted);font-size:.88rem;display:grid;gap:6px}
 @media (max-width:520px){.format li{grid-template-columns:1fr;gap:6px}}
 html{scroll-behavior:smooth}
@@ -166,6 +185,7 @@ html{scroll-behavior:smooth}
       <li><a href="#format">Meetings</a></li>
       <li><a href="#join">Google Group</a></li>
       <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#course">Course</a></li>
       <li><a href="#links">Links</a></li>
       <li><a href="#suggest">Suggest</a></li>
     </ul>
@@ -256,6 +276,20 @@ html{scroll-behavior:smooth}
         <p class="note">From the public <a href="https://tinyurl.com/rna-sig-schedule" target="_blank" rel="noopener">seminar schedule</a>. Talk pages are the announcement notes on HackMD. Topic tags are a first draft for the organizers to edit.</p>
       </div>
     </details>
+  </section>
+
+  <section id="course">
+    <span class="eyebrow">Course</span>
+    <div class="prose">
+      <h2>A semester of RNA structure</h2>
+      <p>The recorded talks, arranged as a 15-week course for RNA Club Warsaw and student groups. Each week pairs two talks to watch before a discussion session. Topics move from secondary structure and chemical probing to 3D structure, dynamics, interactions and design.</p>
+    </div>
+    <div class="modules" id="modules"></div>
+    <div class="extra">
+      <h3>Extra viewing</h3>
+      <ul class="mini" id="extra"></ul>
+      <p class="note">Gap: no recorded talk yet on sequence alignments and covariation. That makes a good guest lecture for week 2.</p>
+    </div>
   </section>
 
   <section id="join" aria-labelledby="join-h">
@@ -417,6 +451,32 @@ var HACKMD={"Grzegorz Chojnowski":"Byuyv1Js2","Robin Pearce":"S1FMJXbhn","Eugene
   document.getElementById("talk-search").addEventListener("input",function(e){state.q=e.target.value;render();});
   var rb=document.getElementById("rec-only");rb.onclick=function(){state.rec=!state.rec;rb.setAttribute("aria-pressed",state.rec);render();};
   render();
+})();
+var COURSE=[
+ {m:"Foundations",lv:1,weeks:[["Where RNA structures live and why they matter",["2023-11-21","2025-08-21"]]]},
+ {m:"Secondary structure",lv:1,weeks:[["Predicting base pairs; big data for prediction",["2023-08-29","2023-10-10"]]]},
+ {m:"Chemical probing",lv:2,weeks:[["Reading structure from DMS",["2024-01-16","2026-02-19"]],["Probing at scale and in cells",["2024-02-13","2025-10-16"]],["From probing to energies and ensembles",["2026-04-16","2024-03-12"]]]},
+ {m:"Experimental 3D structure",lv:2,weeks:[["How models are built and where they go wrong",["2023-08-01","2026-09-03"]],["Describing 3D geometry and topology",["2026-09-17","2026-01-08"]]]},
+ {m:"3D structure prediction",lv:3,weeks:[["Deep learning for 3D structure",["2023-05-23","2023-08-15"]],["Templates and blind tests",["2023-10-24","2026-02-05"]],["Assessing models and knowing the limits",["2025-09-18","2025-12-11"]]]},
+ {m:"Dynamics and simulation",lv:3,weeks:[["Simulation, ions and water",["2023-11-07","2025-10-30"]],["Ensembles and partial disorder",["2026-03-19","2023-12-05"]]]},
+ {m:"Interactions",lv:3,weeks:[["RNA–protein complexes",["2023-06-06","2026-01-29"]],["RNA–small molecule recognition",["2026-07-23","2026-03-05"]]]},
+ {m:"Design",lv:3,weeks:[["Designing RNA structures and switches",["2023-06-20","2024-01-30","2026-04-02"]]]}
+];
+var EXTRA=["2024-02-27","2025-09-04","2024-04-23"];
+(function(){
+  var by={};TALKS.forEach(function(t){by[t[0]]=t;});
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+  function item(d){var t=by[d];if(!t)return "";
+    return '<li><span class="n">#'+NUM[d]+'</span><span class="s">'+esc(t[1])+'</span><span class="t">'+esc(t[3])+'</span>'+
+      (t[4]?'<a class="rec" href="'+t[4]+'" target="_blank" rel="noopener">▶ Watch</a>':'')+'</li>';}
+  var LV=["","Intro","Core","Advanced"],w=0,html="";
+  COURSE.forEach(function(m){
+    html+='<div class="module"><div class="mod-head"><h3>'+esc(m.m)+'</h3><span class="level l'+m.lv+'">'+LV[m.lv]+'</span></div>';
+    m.weeks.forEach(function(wk){w++;
+      html+='<div class="week"><div class="wk"><b>Week '+w+'</b></div><div><div class="focus">'+esc(wk[0])+'</div><ul class="ct">'+wk[1].map(item).join("")+'</ul></div></div>';});
+    html+='</div>';});
+  document.getElementById("modules").innerHTML=html;
+  document.getElementById("extra").innerHTML=EXTRA.map(function(d){var t=by[d];return '<li><time>#'+NUM[d]+'</time><span><b>'+esc(t[1])+'</b> · '+esc(t[3])+(t[4]?' · <a href="'+t[4]+'" target="_blank" rel="noopener">Watch</a>':'')+'</span></li>';}).join("");
 })();
 document.querySelectorAll('.copy').forEach(function(b){
   b.addEventListener('click',function(){
