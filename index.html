@@ -282,12 +282,10 @@ html{scroll-behavior:smooth}
     <span class="eyebrow">Course</span>
     <div class="prose">
       <h2>A semester of RNA structure</h2>
-      <p>The recorded talks, arranged as a 15-week course for RNA aficionados. Each week pairs two talks to watch before a discussion session. Topics move from secondary structure and chemical probing to 3D structure, dynamics, interactions and design.</p>
+      <p>The recorded talks, arranged as a 16-week course for RNA aficionados. Each week pairs two talks to watch before a discussion session. Topics move from secondary structure and chemical probing to 3D structure, dynamics, interactions, evolution and design.</p>
     </div>
     <div class="modules" id="modules"></div>
     <div class="extra">
-      <h3>Extra viewing</h3>
-      <ul class="mini" id="extra"></ul>
       <p class="note">Gap: no recorded talk yet on sequence alignments and covariation. That makes a good guest lecture for week 2.</p>
     </div>
   </section>
@@ -460,9 +458,10 @@ var COURSE=[
  {m:"3D structure prediction",lv:3,weeks:[["Deep learning for 3D structure",["2023-05-23","2023-08-15"]],["Templates and blind tests",["2023-10-24","2026-02-05"]],["Assessing models and knowing the limits",["2025-09-18","2025-12-11"]]]},
  {m:"Dynamics and simulation",lv:3,weeks:[["Simulation, ions and water",["2023-11-07","2025-10-30"]],["Ensembles and partial disorder",["2026-03-19","2023-12-05"]]]},
  {m:"Interactions",lv:3,weeks:[["RNA–protein complexes",["2023-06-06","2026-01-29"]],["RNA–small molecule recognition",["2026-07-23","2026-03-05"]]]},
+ {m:"RNA evolution",lv:3,weeks:[["How RNA machines evolved: introns, splicing and retroelements",["2024-02-27","2025-09-04"]]]},
  {m:"Design",lv:3,weeks:[["Designing RNA structures and switches",["2023-06-20","2024-01-30","2026-04-02"]]]}
 ];
-var EXTRA=["2024-02-27","2025-09-04"];
+var EXTRA=[];
 (function(){
   var by={};TALKS.forEach(function(t){by[t[0]]=t;});
   function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
@@ -476,7 +475,7 @@ var EXTRA=["2024-02-27","2025-09-04"];
       html+='<div class="week"><div class="wk"><b>Week '+w+'</b></div><div><div class="focus">'+esc(wk[0])+'</div><ul class="ct">'+wk[1].map(item).join("")+'</ul></div></div>';});
     html+='</div>';});
   document.getElementById("modules").innerHTML=html;
-  document.getElementById("extra").innerHTML=EXTRA.map(function(d){var t=by[d];return '<li><time>#'+NUM[d]+'</time><span><b>'+esc(t[1])+'</b> · '+esc(t[3])+(t[4]?' · <a href="'+t[4]+'" target="_blank" rel="noopener">Watch</a>':'')+'</span></li>';}).join("");
+  var exEl=document.getElementById("extra");if(exEl)exEl.innerHTML=EXTRA.map(function(d){var t=by[d];return '<li><time>#'+NUM[d]+'</time><span><b>'+esc(t[1])+'</b> · '+esc(t[3])+(t[4]?' · <a href="'+t[4]+'" target="_blank" rel="noopener">Watch</a>':'')+'</span></li>';}).join("");
 })();
 document.querySelectorAll('.copy').forEach(function(b){
   b.addEventListener('click',function(){
