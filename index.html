@@ -96,7 +96,7 @@ section{padding-block:48px;border-top:1px solid var(--line);display:grid;gap:24p
 .aff{font-family:var(--body);font-weight:400;font-size:.95rem;color:var(--muted)}
 .upcoming{display:grid;gap:8px}
 .mini{list-style:none;margin:0;padding:0;display:grid}
-.mini li{display:grid;grid-template-columns:72px 1fr;gap:14px;padding-block:8px;border-bottom:1px dashed var(--line)}
+.mini li{display:grid;grid-template-columns:110px 1fr;gap:14px;padding-block:8px;border-bottom:1px dashed var(--line)}
 .mini li:last-child{border-bottom:0}
 .mini time{font-family:var(--mono);font-size:.85rem;color:var(--blue-strong);font-variant-numeric:tabular-nums}
 
@@ -120,7 +120,10 @@ section{padding-block:48px;border-top:1px solid var(--line);display:grid;gap:24p
 .talks{list-style:none;margin:0;padding:0;display:grid}
 .talk{display:grid;grid-template-columns:104px 1fr;gap:16px;padding-block:14px;border-bottom:1px solid var(--line)}
 .talk:last-child{border-bottom:0}
-.talk time{font-family:var(--mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
+.talk .when{display:flex;flex-direction:column;gap:2px;padding-top:2px}
+.talk .num{font-family:var(--display);font-weight:800;font-size:1.15rem;line-height:1;color:var(--blue-strong);font-variant-numeric:tabular-nums}
+.talk time{font-family:var(--mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:560px){.talk .when{flex-direction:row;align-items:baseline;gap:10px}}
 .talk .body{display:grid;gap:4px;min-width:0}
 .talk .who{font-family:var(--display);font-weight:700;font-size:1.02rem}
 .talk .where{font-family:var(--body);font-weight:400;color:var(--muted);font-size:.9rem}
@@ -225,7 +228,7 @@ html{scroll-behavior:smooth}
   <section id="speakers">
     <span class="eyebrow">Speakers</span>
     <div class="next">
-      <span class="role">Next seminar · today</span>
+      <span class="role">Next seminar #46 · today</span>
       <div class="next-date">Thu 15 October 2026 <span class="tz">17:00 CEST · 11:00 ET · 8:00 PT</span></div>
       <h3>Rohit Roy <span class="aff">MRC Laboratory of Molecular Biology, UK</span></h3>
       <p>Thermodynamic prediction of RNA cellular activity from sequence via conformational ensembles</p>
@@ -234,10 +237,10 @@ html{scroll-behavior:smooth}
     <div class="upcoming">
       <h3>Coming up</h3>
       <ul class="mini">
-        <li><time>29 Oct</time><span>CASP17 target special seminar</span></li>
-        <li><time>12 Nov</time><span><b>Jeffrey Kieft</b> · New York Structural Biology Center</span></li>
-        <li><time>10 Dec</time><span><b>Juli Feigon</b></span></li>
-        <li><time>28 Jan</time><span>CASP17 target special seminar</span></li>
+        <li><time>#47 · 29 Oct</time><span>CASP17 target special seminar</span></li>
+        <li><time>#48 · 12 Nov</time><span><b>Jeffrey Kieft</b> · New York Structural Biology Center</span></li>
+        <li><time>#49 · 10 Dec</time><span><b>Juli Feigon</b></span></li>
+        <li><time>#51 · 28 Jan</time><span>CASP17 target special seminar</span></li>
       </ul>
     </div>
 
@@ -245,7 +248,7 @@ html{scroll-behavior:smooth}
       <summary><span class="sum-t">All speakers since 2023</span> <span class="sum-n" id="sum-n"></span><span class="chev" aria-hidden="true"></span></summary>
       <div class="all-body">
         <div class="filters">
-          <input id="talk-search" type="search" placeholder="Search speaker, institute or title" aria-label="Search talks">
+          <input id="talk-search" type="search" placeholder="Search #, speaker, institute or title" aria-label="Search talks">
           <button class="chip" type="button" id="rec-only" aria-pressed="false">Recorded only</button>
         </div>
         <div class="tagbar" id="tagbar" aria-label="Filter by topic"></div>
@@ -379,6 +382,7 @@ var TALKS=[
 ["2023-06-06","Frank DiMaio","University of Washington School of Medicine","Predicting protein/nucleic acid complexes with RoseTTAFoldNA","https://www.youtube.com/watch?v=8qWrEAyB1Ok",[DL,RP]],
 ["2023-05-23","Yu Li","Chinese University of Hong Kong","RNA structure prediction with deep learning","https://www.youtube.com/watch?v=fdMkEk84Y4A",[DL]]
 ];
+var NUM={"2026-09-17":44,"2026-09-03":43,"2026-08-20":42,"2026-08-06":41,"2026-07-23":40,"2026-06-25":39,"2026-04-30":38,"2026-04-16":37,"2026-04-02":36,"2026-03-19":35,"2026-03-05":34,"2026-02-19":33,"2026-02-05":32,"2026-01-29":31,"2026-01-08":30,"2025-12-11":29,"2025-11-26":28,"2025-10-30":26,"2025-10-16":25,"2025-10-02":24,"2025-09-18":23,"2025-09-04":22,"2025-08-21":21,"2024-05-14":20,"2024-04-23":19,"2024-04-09":18,"2024-03-12":17,"2024-02-27":16,"2024-02-13":15,"2024-01-30":14,"2024-01-16":13,"2023-12-05":12,"2023-11-21":11,"2023-11-07":10,"2023-10-24":9,"2023-10-10":8,"2023-08-29":6,"2023-08-15":5,"2023-08-01":4,"2023-06-20":3,"2023-06-06":2,"2023-05-23":1};
 var HACKMD={"Grzegorz Chojnowski":"Byuyv1Js2","Robin Pearce":"S1FMJXbhn","Eugene Baulin":"ByPMJDG6h","Rhiju Das":"HyGjE-cep","Jianyi Yang, Wenkai Wang":"SkmSAw3Wa","Karissa Sanbonmatsu":"rJZkXoz7a","Cathy Lawson":"SJXn2sZVa","Miroslav Krepl":"Sk8hGDUH6","Joseph Yesselman":"rkvfzPsua","Chaitanya Joshi":"rkV712TFp","Shujun He":"Skr0wPljp","Navtej Toor":"rJmxokNha","Megan Ken":"BJTl5vL66","Daisuke Kihara":"rkRZBCs1C","Quentin Vicens":"BJl7kyClR","Silvi Rouskin":"rJ5PvC0W0"};
 (function(){
   var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -399,9 +403,9 @@ var HACKMD={"Grzegorz Chojnowski":"Byuyv1Js2","Robin Pearce":"S1FMJXbhn","Eugene
     TALKS.forEach(function(t){
       if(state.tag&&t[5].indexOf(state.tag)<0)return;
       if(state.rec&&!t[4])return;
-      if(q&&(t[1]+" "+t[2]+" "+t[3]).toLowerCase().indexOf(q)<0)return;
+      if(q&&("#"+NUM[t[0]]+" "+t[1]+" "+t[2]+" "+t[3]).toLowerCase().indexOf(q)<0)return;
       n++;
-      html+='<li class="talk"><time datetime="'+t[0]+'">'+fmt(t[0])+'</time><div class="body"><div class="who">'+esc(t[1])+' <span class="where">· '+esc(t[2])+'</span></div>'+
+      html+='<li class="talk"><div class="when"><span class="num">#'+(NUM[t[0]]||"")+'</span><time datetime="'+t[0]+'">'+fmt(t[0])+'</time></div><div class="body"><div class="who">'+esc(t[1])+' <span class="where">· '+esc(t[2])+'</span></div>'+
         (t[3]?'<div class="title">'+esc(t[3])+'</div>':'')+'<div class="meta">'+
         (t[4]?'<a class="rec" href="'+t[4]+'" target="_blank" rel="noopener">▶ Watch</a>':'<span class="rec">Not recorded</span>')+
         (HACKMD[t[1]]?'<a class="page" href="https://hackmd.io/@mmagnus/'+HACKMD[t[1]]+'" target="_blank" rel="noopener">Talk page</a>':'')+
